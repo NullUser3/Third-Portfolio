@@ -95,10 +95,8 @@ export default function AmbientParticles() {
     };
   }, []);
 
-  return <div className="fixed inset-0 z-0 pointer-events-none">
-      <div
-      id="ambient-particles"
-      className="absolute inset-0 h-full w-full"
-    />
-    </div>;
+  return <div
+    id="ambient-particles"
+    className="fixed inset-0 h-svh w-full z-0 pointer-events-none"
+  />
 }
