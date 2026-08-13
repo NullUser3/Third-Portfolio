@@ -17,7 +17,7 @@ export default function ShootingStarScrollbar() {
       className="
         fixed
         end-3
-        top-1/2
+        top-[50svh]
         -translate-y-1/2
         rounded-full
         h-40
