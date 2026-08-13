@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
 import MenuToggle from "./animation/MenuToggle";
-
-  const PortalSidebar = dynamic(
-  () => import("@/app/components/animation/PortalSidebar"),
-  { ssr: false }
-);
+import PortalSidebar from "./animation/PortalSidebar";
+//   const PortalSidebar = dynamic(
+//   () => import("@/app/components/animation/PortalSidebar"),
+//   { ssr: false }
+// );
 
 export default function Layout({
   children,
