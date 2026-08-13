@@ -1,0 +1,167 @@
+{
+    "Metadata": {
+    "title": "Ahmed Mohamed | Full-Stack Web Developer",
+    "description": "Portfolio of Ahmed Mohamed, a Full-Stack Web Developer specializing in modern web applications."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact",
+    "sectionTitle": "Navigation",
+    "createdUsing": "Created using Next.js and GSAP."
+  },
+
+  "links": {
+    "sectionTitle": "Links",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "email": "Email",
+    "resume": "Resume"
+  },
+
+
+
+  "hero": {
+    "heading": {"top":"FULLSTACK","bottom":"DEVELOPER"},
+    "title": "Hi, I'm Ahmed, a Passionate Web Developer",
+    "description": "I'm <name>Ahmed</name>, a Full-Stack Developer with 2+ years of experience in building web apps. I'm passionate about coding and building modern apps with the most recent technologies.",
+    
+    "actions": {
+      "myWork": "My Work",
+      "resume": "Resume"
+    },
+
+    "availability": "Available for full-time opportunities",
+
+    "stats": {
+      "experience": "Years of Experience",
+      "projects": "Completed Projects",
+      "hours": "Hours Worked"
+    }
+  },
+
+  "about": {
+    "title": "Introduction",
+    "introduction":"Hi my name is Ahmed Mohamed",
+    "description": "I'm a Full-Stack Developer with a B.S. in <degree>Software Engineering</degree> (2023 graduate) and 2+ years of experience building responsive, scalable web applications across modern stacks. Skilled in JavaScript, TypeScript, React, Next.js, Spring Boot, Laravel, Node.js, Tailwind CSS, MySQL, and RESTful API development."
+    , "descriptionBottom": "Continuously learning and adapting—comfortable with Git, modern tooling, and deploying full-stack applications to platforms like Vercel and Netlify."
+  },
+
+  "skills": {
+    "title": "Skills",
+    "categories": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databasesTools": "Databases & Tools"
+    }
+  },
+
+  "experience": {
+    "title": "Experience & Education",
+    "freelance": {
+      "company": "@ Startup Client (E-commerce)",
+      "role": "Freelance Web Developer",
+      "period": "Aug 2025 – Dec 2025",
+      "description1": "Built and deployed a Laravel-based admin dashboard for managing products, orders, and users.",
+      "description2": "Integrated invoice and payment APIs; connected to MySQL using stored procedures.",
+      "description3": "Created responsive UI with HTML, CSS, and JavaScript."
+    },
+    "education": {
+      "school": "@ Mashreq University",
+      "degree": "BS in Software Engineering",
+      "period": "Oct 2019 – Feb 2023",
+      "summary": "Graduated with Honors.",
+      "coursework": "Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming, Database Systems, Software Engineering, Web Development, Mobile Application Development, Operating Systems, and Computer Networks."
+    }
+    
+  },
+"contact":{
+      "title": "Contact",
+      "getInTouch": "Get in touch",
+    "createdBy": "Created by Ahmed using Next.js & GSAP. Inspired by",
+    "inspiredBy": "Tajmirul Islam's work"
+    },
+  "projectPage": {
+    "back": "Back",
+    "site": "Site",
+    "github": "GitHub",
+    "description": "Description",
+    "technologies": "Technologies",
+    "features": "Features",
+    "technicalHighlights": "Technical Highlights",
+    "myContribution": "My Contribution"
+  },
+
+  "projects": {
+    "title": "Projects",
+
+    "realtimeChatApp": {
+      "name": "Realtime Chatapp",
+      "description": "Chat app with authentication, online status, and WebSocket messaging.",
+      "longDescription": "A full-stack realtime messaging application that allows users to communicate instantly in a modern chat interface. The app supports authentication, user search, and realtime message delivery using WebSockets.",
+
+      "features": {
+        "authentication": "User authentication",
+        "messaging": "Realtime messaging",
+        "status": "Online/offline user status",
+        "search": "User search",
+        "responsive": "Responsive chat interface"
+      },
+
+      "highlights": {
+        "websockets": "Implemented realtime communication using WebSockets.",
+        "authentication": "Built authentication and protected user routes.",
+        "interface": "Designed a responsive messaging interface with realtime UI updates."
+      },
+
+      "contribution": "Designed and developed the frontend and backend, including authentication, realtime communication, API integration, and database functionality."
+    },
+
+    "expenseTracker": {
+      "name": "Expense Tracker",
+      "description": "I'm <name>Ahmed</name>, a Full-Stack Developer focused on building fast, scalable, and thoughtfully designed web applications with modern technologies.",
+      "longDescription": "A modern full-stack expense tracking application that helps users manage their income and expenses efficiently. The app provides real-time budgeting insights, categorized transactions, and a clean dashboard UI for better financial tracking.",
+
+      "features": {
+        "tracking": "Income and expense tracking",
+        "budget": "Budget management",
+        "transactions": "Categorized transactions",
+        "dashboard": "Financial dashboard",
+        "responsive": "Responsive interface"
+      },
+
+      "highlights": {
+        "api": "Built a full-stack REST API for financial data.",
+        "redux": "Implemented centralized state management with Redux.",
+        "visualization": "Created a dashboard for visualizing income, expenses, and budgets."
+      },
+
+      "contribution": "Developed the frontend and backend, implemented state management, API integration, database operations, and the responsive dashboard interface."
+    },
+
+    "todoApp": {
+      "name": "Todo App",
+      "description": "Todo app with task management and real-time updates using Spring Boot and React.",
+      "longDescription": "A RESTful backend API for the Todo App, built with Java / Spring Boot, containerized with Docker, and powered by Supabase (PostgreSQL) as the cloud database.",
+
+      "features": {
+        "management": "Task creation and management",
+        "api": "RESTful API",
+        "database": "Persistent cloud database",
+        "state": "State management with Redux",
+        "docker": "Dockerized backend"
+      },
+
+      "highlights": {
+        "api": "Designed a RESTful API using Spring Boot.",
+        "jpa": "Mapped application data to PostgreSQL using JPA.",
+        "docker": "Containerized the backend using Docker."
+      },
+
+      "contribution": "Developed the Spring Boot backend and React frontend, implemented REST APIs, database integration, state management, and Docker configuration."
+
+    }
+  }
+}
