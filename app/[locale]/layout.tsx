@@ -70,9 +70,9 @@ export async function generateMetadata({
     },
 
     icons: {
-      icon: "/Logo.png",
-      shortcut: "/Logo.png",
-      apple: "/Logo.png",
+      icon: "/icon.png",
+      shortcut: "/icon.png",
+      apple: "/icon.png",
     },
 
     robots: {
