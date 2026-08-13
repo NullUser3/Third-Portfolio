@@ -1,8 +1,8 @@
 <div align="center">
   <img
-    alt="Portfolio Logo"
+    alt="Portfolio Preview"
     src="https://github.com/NullUser3/Third-Portfolio/blob/main/public/ProjectHero.png"
-    width="100"
+    width="100%"
   />
 </div>
 
