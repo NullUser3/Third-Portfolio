@@ -1,16 +1,11 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import { Circle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { isRtlLocale } from "@/lib/rtl";
-
-// Keep these in sync with MenuToggle
-const BUTTON_SIZE = 48; // h-12 w-12
-const BUTTON_INSET_PERCENT = 5; // end-[5%]
-const ORIGIN_Y = 48; // matches MenuToggle's ORIGIN_INSET
 
 const OPEN_EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -44,7 +39,7 @@ const listVariants: Variants = {
   open: {
     transition: {
       staggerChildren: 0.04,
-      delayChildren: 0.22,
+      delayChildren: 0.12,
     },
   },
   closed: {
@@ -91,25 +86,8 @@ export default function PortalSidebar({
     },
   ] as const;
 
-  const asideRef = useRef<HTMLElement>(null);
-
-  const [radius, setRadius] = useState(1600);
-
-  const [originXInset, setOriginXInset] = useState(
-    (BUTTON_INSET_PERCENT / 100) * 1280 + BUTTON_SIZE / 2
-  );
-
   const shouldReduceMotion = useReducedMotion();
 
-  // LTR: panel is pinned right, so the origin is measured inward from 100%.
-  // RTL: panel is pinned left, so the origin is measured from the left edge.
-  const ORIGIN = isRTL
-    ? `${originXInset}px ${ORIGIN_Y}px`
-    : `calc(100% - ${originXInset}px) ${ORIGIN_Y}px`;
-
-  // Items slide in from the panel's outer edge.
-  // LTR: positive x
-  // RTL: negative x
   const itemVariants: Variants = useMemo(
     () => ({
       open: {
@@ -124,44 +102,6 @@ export default function PortalSidebar({
     [isRTL]
   );
 
-  /*
-   * Measure the sidebar once when the layout is ready.
-   *
-   * We intentionally do NOT attach a resize listener here.
-   * Android Chrome can fire resize events when its browser toolbar
-   * appears/disappears. Recalculating the radius during that process
-   * can change the clip-path animation target and interrupt it.
-   *
-   * The sidebar uses svh, so its height remains stable.
-   */
-  useLayoutEffect(() => {
-    const el = asideRef.current;
-    if (!el) return;
-
-    const measure = () => {
-      const viewportWidth = window.innerWidth;
-
-      const buttonInsetPx =
-        (BUTTON_INSET_PERCENT / 100) * viewportWidth;
-
-      const xInset = buttonInsetPx + BUTTON_SIZE / 2;
-
-      setOriginXInset(xInset);
-
-      const { width, height } = el.getBoundingClientRect();
-
-      const originX = isRTL ? xInset : width - xInset;
-      const originY = ORIGIN_Y;
-
-      const dx = Math.max(originX, width - originX);
-      const dy = Math.max(originY, height - originY);
-
-      setRadius(Math.ceil(Math.hypot(dx, dy)));
-    };
-
-    measure();
-  }, [isRTL]);
-
   return (
     <>
       {/* Backdrop */}
@@ -173,7 +113,7 @@ export default function PortalSidebar({
           opacity: open ? 1 : 0,
         }}
         transition={{
-          duration: shouldReduceMotion ? 0.1 : 0.4,
+          duration: shouldReduceMotion ? 0.1 : 0.3,
           ease: OPEN_EASE,
         }}
         style={{
@@ -182,8 +122,22 @@ export default function PortalSidebar({
         className="fixed inset-0 z-50 bg-background/80"
       />
 
-      <aside
-        ref={asideRef}
+      {/* Sidebar */}
+      <motion.aside
+        initial={false}
+        animate={{
+          x: open ? 0 : isRTL ? "-100%" : "100%",
+        }}
+        transition={
+          shouldReduceMotion
+            ? {
+                duration: 0.1,
+              }
+            : {
+                duration: 0.45,
+                ease: OPEN_EASE,
+              }
+        }
         className="
           fixed
           end-0
@@ -197,39 +151,7 @@ export default function PortalSidebar({
           pointer-events-none
         "
       >
-        <motion.div
-          initial={{
-            clipPath: `circle(0px at ${ORIGIN})`,
-          }}
-          animate={{
-            clipPath: open
-              ? `circle(${radius}px at ${ORIGIN})`
-              : `circle(0px at ${ORIGIN})`,
-          }}
-          transition={
-            shouldReduceMotion
-              ? {
-                  duration: 0.15,
-                  ease: OPEN_EASE,
-                }
-              : {
-                  type: "spring",
-                  stiffness: 170,
-                  damping: 26,
-                  mass: 1,
-                }
-          }
-          style={{
-            willChange: "clip-path",
-          }}
-          className="
-            absolute
-            inset-0
-            pointer-events-auto
-            z-20
-            bg-background
-          "
-        >
+        <div className="absolute inset-0 pointer-events-auto bg-background">
           <div className="absolute inset-0 bg-foreground/10 z-0" />
 
           <motion.nav
@@ -362,8 +284,8 @@ export default function PortalSidebar({
               </span>
             </motion.div>
           </motion.nav>
-        </motion.div>
-      </aside>
+        </div>
+      </motion.aside>
     </>
   );
 }

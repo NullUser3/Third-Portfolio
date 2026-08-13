@@ -9,7 +9,7 @@ import Footer from "../components/sections/Footer";
 export default function Home() {
   return (
 
-      <div className="min-h-dvh w-full bg-background">
+      <div className="min-h-svh w-full bg-background">
         
         <Hero />
         <About />
