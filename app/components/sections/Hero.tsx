@@ -60,7 +60,7 @@ const t = useTranslations('hero');
   return (
     <section
       id="home"
-      className="w-full relative font-space max-w-6xl mx-auto px-6 md:px-8  z-40"
+      className="w-full font-space max-w-6xl mx-auto px-6 md:px-8  z-40"
     >
       <div
   className="
@@ -92,7 +92,7 @@ const t = useTranslations('hero');
 
 <ShootingStarScrollbar />
       <div
-        className=" z-10  justify-center flex h-full  min-h-dvh   flex-col gap-8"
+        className=" z-10  justify-center flex min-h-svh flex-col gap-8"
         ref={container}
       >
         <div

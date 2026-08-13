@@ -1,4 +1,3 @@
-// src/components/PortalSidebar.tsx
 "use client";
 
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -9,11 +8,9 @@ import { Link } from "@/i18n/navigation";
 import { isRtlLocale } from "@/lib/rtl";
 
 // Keep these in sync with MenuToggle
-// NOTE: MenuToggle also needs to switch its `right-[5%]` to `end-[5%]`
-// (or an equivalent RTL-aware inset) for this to line up in Arabic.
 const BUTTON_SIZE = 48; // h-12 w-12
 const BUTTON_INSET_PERCENT = 5; // end-[5%]
-const ORIGIN_Y = 48; // matches MenuToggle's ORIGIN_INSET (vertical center)
+const ORIGIN_Y = 48; // matches MenuToggle's ORIGIN_INSET
 
 const OPEN_EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -25,18 +22,36 @@ const colorClasses = {
 } as const;
 
 const linkItems = [
-  { key: "linkedin", href: "https://www.linkedin.com/in/ahmed-moham3d/" },
-  { key: "github", href: "https://github.com/NullUser3" },
-  { key: "email", href: "mailto:ahmed.dev37@gmail.com" },
-  { key: "resume", href: "Ahmed_Mohamed_CV.pdf" },
+  {
+    key: "linkedin",
+    href: "https://www.linkedin.com/in/ahmed-moham3d/",
+  },
+  {
+    key: "github",
+    href: "https://github.com/NullUser3",
+  },
+  {
+    key: "email",
+    href: "mailto:ahmed.dev37@gmail.com",
+  },
+  {
+    key: "resume",
+    href: "Ahmed_Mohamed_CV.pdf",
+  },
 ] as const;
 
 const listVariants: Variants = {
   open: {
-    transition: { staggerChildren: 0.04, delayChildren: 0.22 },
+    transition: {
+      staggerChildren: 0.04,
+      delayChildren: 0.22,
+    },
   },
   closed: {
-    transition: { staggerChildren: 0.02, staggerDirection: -1 },
+    transition: {
+      staggerChildren: 0.02,
+      staggerDirection: -1,
+    },
   },
 };
 
@@ -49,75 +64,122 @@ export default function PortalSidebar({
 }) {
   const locale = useLocale();
   const isRTL = isRtlLocale(locale);
+
   const tNav = useTranslations("nav");
   const tLinks = useTranslations("links");
 
   const navItems = [
-    { key: "home", href: { pathname: "/", hash: "home" }, color: "yellow" },
-    { key: "about", href: { pathname: "/", hash: "about" }, color: "blue" },
-    { key: "skills", href: { pathname: "/", hash: "skills" }, color: "purple" },
-    { key: "projects", href: { pathname: "/", hash: "projects" }, color: "red" },
-    
+    {
+      key: "home",
+      href: { pathname: "/", hash: "home" },
+      color: "yellow",
+    },
+    {
+      key: "about",
+      href: { pathname: "/", hash: "about" },
+      color: "blue",
+    },
+    {
+      key: "skills",
+      href: { pathname: "/", hash: "skills" },
+      color: "purple",
+    },
+    {
+      key: "projects",
+      href: { pathname: "/", hash: "projects" },
+      color: "red",
+    },
   ] as const;
 
   const asideRef = useRef<HTMLElement>(null);
+
   const [radius, setRadius] = useState(1600);
+
   const [originXInset, setOriginXInset] = useState(
     (BUTTON_INSET_PERCENT / 100) * 1280 + BUTTON_SIZE / 2
   );
+
   const shouldReduceMotion = useReducedMotion();
 
   // LTR: panel is pinned right, so the origin is measured inward from 100%.
-  // RTL: panel is pinned left (via `end-0`), so the origin is just xInset
-  // from the left edge — no "100% -" needed.
+  // RTL: panel is pinned left, so the origin is measured from the left edge.
   const ORIGIN = isRTL
     ? `${originXInset}px ${ORIGIN_Y}px`
     : `calc(100% - ${originXInset}px) ${ORIGIN_Y}px`;
 
-  // Items slide in from the panel's outer edge — that's the left in LTR
-  // (positive x) and the right in RTL (negative x).
+  // Items slide in from the panel's outer edge.
+  // LTR: positive x
+  // RTL: negative x
   const itemVariants: Variants = useMemo(
     () => ({
-      open: { opacity: 1, x: 0 },
-      closed: { opacity: 0, x: isRTL ? -12 : 12 },
+      open: {
+        opacity: 1,
+        x: 0,
+      },
+      closed: {
+        opacity: 0,
+        x: isRTL ? -12 : 12,
+      },
     }),
     [isRTL]
   );
 
+  /*
+   * Measure the sidebar once when the layout is ready.
+   *
+   * We intentionally do NOT attach a resize listener here.
+   * Android Chrome can fire resize events when its browser toolbar
+   * appears/disappears. Recalculating the radius during that process
+   * can change the clip-path animation target and interrupt it.
+   *
+   * The sidebar uses svh, so its height remains stable.
+   */
   useLayoutEffect(() => {
     const el = asideRef.current;
     if (!el) return;
 
     const measure = () => {
       const viewportWidth = window.innerWidth;
-      const buttonInsetPx = (BUTTON_INSET_PERCENT / 100) * viewportWidth;
+
+      const buttonInsetPx =
+        (BUTTON_INSET_PERCENT / 100) * viewportWidth;
+
       const xInset = buttonInsetPx + BUTTON_SIZE / 2;
+
       setOriginXInset(xInset);
 
       const { width, height } = el.getBoundingClientRect();
+
       const originX = isRTL ? xInset : width - xInset;
       const originY = ORIGIN_Y;
+
       const dx = Math.max(originX, width - originX);
       const dy = Math.max(originY, height - originY);
+
       setRadius(Math.ceil(Math.hypot(dx, dy)));
     };
 
     measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
   }, [isRTL]);
 
   return (
     <>
-      {/* backdrop */}
+      {/* Backdrop */}
       <motion.div
         aria-hidden="true"
         onClick={onClose}
         initial={false}
-        animate={{ opacity: open ? 1 : 0 }}
-        transition={{ duration: shouldReduceMotion ? 0.1 : 0.4, ease: OPEN_EASE }}
-        style={{ pointerEvents: open ? "auto" : "none" }}
-        className="fixed inset-0 z-50 bg-background/80 "
+        animate={{
+          opacity: open ? 1 : 0,
+        }}
+        transition={{
+          duration: shouldReduceMotion ? 0.1 : 0.4,
+          ease: OPEN_EASE,
+        }}
+        style={{
+          pointerEvents: open ? "auto" : "none",
+        }}
+        className="fixed inset-0 z-50 bg-background/80"
       />
 
       <aside
@@ -128,7 +190,7 @@ export default function PortalSidebar({
           top-0
           z-50
           font-space
-          h-dvh 
+          h-svh
           w-3/4
           sm:w-96
           overflow-hidden
@@ -136,7 +198,9 @@ export default function PortalSidebar({
         "
       >
         <motion.div
-          initial={{ clipPath: `circle(0px at ${ORIGIN})` }}
+          initial={{
+            clipPath: `circle(0px at ${ORIGIN})`,
+          }}
           animate={{
             clipPath: open
               ? `circle(${radius}px at ${ORIGIN})`
@@ -144,10 +208,20 @@ export default function PortalSidebar({
           }}
           transition={
             shouldReduceMotion
-              ? { duration: 0.15, ease: OPEN_EASE }
-              : { type: "spring", stiffness: 170, damping: 26, mass: 1 }
+              ? {
+                  duration: 0.15,
+                  ease: OPEN_EASE,
+                }
+              : {
+                  type: "spring",
+                  stiffness: 170,
+                  damping: 26,
+                  mass: 1,
+                }
           }
-          style={{ willChange: "clip-path" }}
+          style={{
+            willChange: "clip-path",
+          }}
           className="
             absolute
             inset-0
@@ -176,19 +250,55 @@ export default function PortalSidebar({
               text-lg
             "
           >
-            {/* top */}
-            <div className="flex flex-col sm:flex-row h-2/3 sm:items-center mt-10 sm:gap-0 gap-12 sm:mt-0  sm:justify-between w-full">
+            {/* Top */}
+            <div
+              className="
+                flex
+                flex-col
+                sm:flex-row
+                h-2/3
+                sm:items-center
+                mt-10
+                sm:gap-0
+                gap-12
+                sm:mt-0
+                sm:justify-between
+                w-full
+              "
+            >
               <div className="flex flex-col gap-4 z-10">
-                <span className="text-body-text text-base">{tNav("sectionTitle")}</span>
+                <span className="text-body-text text-base">
+                  {tNav("sectionTitle")}
+                </span>
+
                 {navItems.map(({ key, href, color }) => (
-                  <motion.div key={key} variants={itemVariants} transition={{ duration: 0.3, ease: OPEN_EASE }}>
+                  <motion.div
+                    key={key}
+                    variants={itemVariants}
+                    transition={{
+                      duration: 0.3,
+                      ease: OPEN_EASE,
+                    }}
+                  >
                     <Link
-                      className="flex hover:underline items-center text-lg sm:text-xl justify-items-start gap-2 cursor-pointer"
+                      className="
+                        flex
+                        hover:underline
+                        items-center
+                        text-lg
+                        sm:text-xl
+                        justify-items-start
+                        gap-2
+                        cursor-pointer
+                      "
                       href={href}
                       onClick={() => onClose?.()}
                       tabIndex={open ? 0 : -1}
                     >
-                      <Circle className={`w-2 h-2 ${colorClasses[color]}`} />
+                      <Circle
+                        className={`w-2 h-2 ${colorClasses[color]}`}
+                      />
+
                       {tNav(key)}
                     </Link>
                   </motion.div>
@@ -196,12 +306,31 @@ export default function PortalSidebar({
               </div>
 
               <div className="flex flex-col gap-4 z-10">
-                <span className="text-body-text text-base">{tLinks("sectionTitle")}</span>
+                <span className="text-body-text text-base">
+                  {tLinks("sectionTitle")}
+                </span>
+
                 {linkItems.map(({ key, href }) => (
-                  <motion.div key={key} variants={itemVariants} transition={{ duration: 0.3, ease: OPEN_EASE }}>
+                  <motion.div
+                    key={key}
+                    variants={itemVariants}
+                    transition={{
+                      duration: 0.3,
+                      ease: OPEN_EASE,
+                    }}
+                  >
                     <a
-                    target="_blank" rel="noopener noreferrer"
-                      className="flex hover:underline items-center text-lg sm:text-xl justify-items-start gap-2"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="
+                        flex
+                        hover:underline
+                        items-center
+                        text-lg
+                        sm:text-xl
+                        justify-items-start
+                        gap-2
+                      "
                       href={href}
                       tabIndex={open ? 0 : -1}
                     >
@@ -212,15 +341,25 @@ export default function PortalSidebar({
               </div>
             </div>
 
-            {/* bottom */}
+            {/* Bottom */}
             <motion.div
               variants={itemVariants}
-              transition={{ duration: 0.3, ease: OPEN_EASE }}
-              className="flex w-full h-1/3 items-center justify-center z-10"
+              transition={{
+                duration: 0.3,
+                ease: OPEN_EASE,
+              }}
+              className="
+                flex
+                w-full
+                h-1/3
+                items-center
+                justify-center
+                z-10
+              "
             >
               <span className="text-foreground/70 text-base">
-  {tNav('createdUsing')}
-</span>
+                {tNav("createdUsing")}
+              </span>
             </motion.div>
           </motion.nav>
         </motion.div>
