@@ -128,7 +128,7 @@ export default function PortalSidebar({
           top-0
           z-50
           font-space
-          h-screen
+          h-dvh 
           w-3/4
           sm:w-96
           overflow-hidden
